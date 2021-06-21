@@ -1,0 +1,95 @@
+Mit der Rolle des Impflings und des Administrators sind sowohl männliche, weibliche als auch diverse Personen gemeint.
+
+Aufgabe Vaccination Appointments App:
+
+Um die Terminvergabe für die Corona Impfungen effizienter zu gestalten und den Telefonservice zu entlasten, 
+soll es eine App geben, um sich für Termine zur Impfung einschreiben zu können.
+
+In dieser App soll es zwei Rollen geben den potentiellen Impfling (weiter nur als Impfling bezeichnet) und den Administrator.
+Beim Starten der Applikation ist immer die Rolle des Impflings ausgewählt.
+
+Der Administrator soll sich per Benutzername und Passwort einloggen können. (Benutzername und Passwort können hardcoded im Programmcode hinterlegt sein)
+
+Der Administrator hat folgende Möglichkeiten innerhalb der App:
+
+- Neue Termine für einen Tag anlegen.
+- Übersicht über einen gewählten Tag.
+  - Anzeige wie viel Prozent der Termine belegt bzw. frei sind
+  - Anzeige der freien Uhrzeiten
+    - Bei parallelen Terminen soll die Anzahl der freien Termine hinter der Uhrzeit stehen, bspw.:
+      - gewähltes Datum: 21.06.2021
+      - Freie Uhrzeiten:
+        - 10:00 Uhr (3)
+        - 10:33 Uhr (1)
+        - 11:27 Uhr (2)
+    - Wenn alle Termine belegt sind, soll die Auswahlmöglichkeit deaktiviert werden und das Datum mit (100 % belegt) in der Übersicht versehen werden.
+- Statistik über alle Tage hinweg anzeigen, wie viele Termine es bereits gegeben hat und wie viele davon belegt bzw. frei sind.
+  - Ebenso die Anzeige wie viele freie Termine in der Vergangenheit liegen und damit ungenutzt sind.
+  - Ebenso die Anzeige wie viele freie Termine es aktuell in der Zukunft gibt.
+
+Bei der Anlage von neuen Terminen hat der Administrator die Möglichkeit den Tag, den Zeitraum, gleichzeitige Impfungen und die Zeitabstände der Termine auszuwählen, bspw.:
+
+Datum: 21.06.2021
+Zeitraum von: 09:00
+Zeitraum bis: 12:00
+Gleichzeitige Impfungen: 4
+Zeitabstände in Minuten: 3
+
+So ergibt sich daraus ein Zeitraum von 3 Stunden, in denen alle 3 Minuten 4 Personen geimpft werden können, 
+in Summe: 3 h a 60 Minuten = 180 Minuten / 3 Minuten * 4 Personen = 240 Termine für den Tag
+
+Die möglichen parallelen Termine werden dann alle angelegt in den jeweils gewählten Minutenabständen zur gewählten Startzeit, bspw.:
+
+Termine 1 - 4
+Datum: 21.06.2021
+Start: 09:00
+Ende: 09:03
+
+Termine 5 - 8
+Datum: 21.06.2021
+Start: 09:03
+Ende: 09:06
+....
+Termine 237 - 240
+Datum: 21.06.2021
+Start: 11:57
+Ende: 12:00
+
+Da es sich hierbei um sehr viele Daten handeln wird, empfehle Ich euch für das Testen der Applikation die Zeitabstände sehr groß zu wählen, 
+die gleichzeitigen Impfungen klein zu halten und den Zeitraum nicht zu groß zu wählen.
+Wenn es richtig programmiert ist, lässt es sich auf eine große Masse übertragen.
+
+Der Impfling soll folgende Möglichkeiten besitzen:
+
+- Die freien Termine anhand des Datums einzusehen.
+- Die freien Termine für genau ein Datum einzusehen, nach dem dieser suchen kann.
+
+Sobald der Impfling einen passenden freien Termin für sich gefunden hat, 
+kann sich der Impfling für diesen mit seiner E-Mail Adresse, seinem Vor- und Nachnamen, Geburtsdatum, Telefonnummer und der Adresse registieren.
+
+Sobald der Termin mit dem Impfling und seinen Daten verknüpft ist, bekommt der Impfling auf dem Bildschirm eine Bestätigung.
+Ebenso würde er im "realen" Betrieb eine Bestätigungsmail bekommen.
+
+Sobald eine E-Mail Adresse für einen Termin verwendet wurde, ist diese gesperrt.
+Bedeutet mit einer E-Mail Adresse können keine zwei Termine verknüpft werden.
+
+Es muss tatsächlich keine E-Mail an die E-Mail Adresse des Impflings versendet werden, lediglich soll das E-Mail System mit ins System integriert werden.
+Zum einen ist es dann Teil des Gesamtsystems, also muss es auch im UML Use Case Diagramm auftauchen und 
+zum anderen soll es eine vereinfachte Schnittstelle dazu im Programmcode geben.
+
+Sollten keine freien Termine mehr vorhanden sein, so soll dies dem Impfling beim Öffnen der App mitgeteilt werden und 
+dieser soll die Möglichkeit erhalten, sich in eine Warteliste einzutragen.
+
+In die Warteliste gibt der Impfling die gleichen Daten ein wie bei der Registrierung für den freien Termin.
+Die Warteliste wird ebenfalls persistiert.
+Sobald der Administrator neue Termine anlegt, soll die Warteliste abgearbeitet werden.
+Bedeutet die Personen auf der Warteliste werden mit den neuen Terminen verknüpft.
+
+Diese Personen werden dann im realen Betrieb per E-Mail informiert und aus der Warteliste genommen.
+Hierbei gilt das Prinzip First-In / First-Out, der Erste in der Warteliste, bekommt auch als erstes einen neuen freien Termin.
+
+
+
+
+//Vllt noch Impfstoff Auwahl?
+//Balkendiagramm in Konsole

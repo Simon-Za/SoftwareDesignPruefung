@@ -1,0 +1,50 @@
+Das Wichtigste zu allererst, ich kann eure Projekte nur bewerten, wenn diese entsprechend lauffähig sind.
+Ein Programm was abgegeben wird und nicht lauffähig ist, gilt als durch gefallen.
+
+Allgemeine Anforderungen an das SoftwareDesign Prüfungsprojekt:
+
+Abgabe Möglichkeiten:
+- Abgabe erfolgt über Felix:
+  1. Eine Text, PDF oder sonstige Datei mit Link zu öffentlichem Repository, welches geclont werden kann
+  2. Eine Zip Datei in Felix, mit allen relevanten Files eures Projekts1. Es müssen drei UML-Diagramme erstellt werden:
+  1.1. Ein UseCase Diagramm
+  1.2. Ein Aktivitätsdiagramm eines UseCases aus dem UseCase Diagramm
+  1.3. Ein Klassendiagramm der Software
+2. Quellcode:
+  2.1. Der Quellcode der Software muss objektorientiert entwickelt sein.
+  2.2. Die Software soll als Konsolenprogramm umgesetzt sein, ersatzweise als Browser Applikation.
+  2.3. Innerhalb des Quellcodes und Klassendiagramms müssen mindestens zwei Design Patterns eingearbeitet sein, gerne auch mehr.
+  2.4. Innerhalb des Quellcodes soll es mindestens eine Umsetzung einer Regular Expression geben. 
+    Note: Am besten hierfür sind Eingaben von Zahlen, Nummern, Postleitzahlen, Namen, Texte, etc. geeignet.
+3. Datenhaltung:
+  3.1. Die Daten müssen in Dateien im JSON oder XML Format gespeichert werden. Für die Objektstrukturen werden keine Vorgaben gemacht.
+    - Alternativ kann auch ein Datenbank, idealerweise eine NoSQL Datenbank / Objekt Datenbank benutzt werden
+  3.2. Es kann sinnvoll sein, die zu persistierenden Daten in unterschiedlichen Dateien zu speichern.
+  3.3. Bei 1:1 Relationen der Daten zueinander können diese als eigene Attribute an den Datenobjekten gespeichert werden.
+  3.4. Bei 1:N und N:M Relationen der Daten zueinander kann es Sinn machen, diese in eigenen Daten abzuspeichern. Stichwort Zwischentabelle
+  3.5. Aus dem Programm heraus müssen neue Daten angelegt werden können und in die bestehenden Dateien gespeichert werden.
+  3.6. Aus dem Programm heraus müssen die Daten aus den Dateien / der Datenbank gelesen werden.
+  3.7. Jeder Datensatz muss eindeutig sein, über Vor- und Nachname lässt sich keine Eindeutigkeit herstellen.
+    Note: Bitte beachten Sie hierzu die Möglichkeiten aus der Vorlesung (Spezifisches Attribut (ISBN, WKN, ISIN, etc...), Fortlaufende Nummer oder UUID)	//E-Mail
+  3.8. Design Patterns wie Data Access Objects (DAO) oder Data Transfer Objects (DTO) können bei der Persistierung oder beim Laden von Daten hilfreich sein.	//nicht zwingend, gilt als Tipp
+4. Testen:
+  4.1. Die Applikation soll mindestens einen ausführbaren und sinnvollen Unit Test besitzen.	
+    - zum Beispiel: das Validieren eines Benutzernamen oder das korrekte Erzeugen eines Nullobjekts.	//z.B. das Valiedieren eines Usernames/E-Mail/Name/Uhrzeit  //"npm run test"
+
+Sprache:
+- Der gesamte Quellcode muss in Englisch sein 
+- UseCase Diagramm und Aktivitätsdiagramm können in Deutsch sein, Klassendiagramm in Englisch für die Synergie zum Quellcode
+
+Hinweise:
+- Bitte beachtet die Regeln aus dem Kapitel 04 Clean Code
+- Bitte denkt daran euch eigene Code Konventionen zu setzen und diese im Quellcode konsequent umzusetzen
+- Bitte achtet auf eine gewisse Modularisierung in eurem Quellcode
+- Seit entsprechend kreativ, wenn es darum geht, welche Attribute und Methoden bei den Klassen Sinn machen.
+- Attribute und Methoden können entsprechend sinnvoll sein, auch wenn diese nicht direkt aus dem Aufgabentext ersichtlich sind.
+
+//Mail für Anforderungen schicken! (dass ersieht dass man engaged ist)
+
+//Kreativ sein!
+
+
+
