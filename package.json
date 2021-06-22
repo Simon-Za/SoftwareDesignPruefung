@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Simon-Za/SoftwareDesignPruefung#readme",
   "dependencies": {
+    "prompts": "^2.4.1",
     "typescript": "^4.3.2"
   }
 }

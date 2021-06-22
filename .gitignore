@@ -1,4 +1,4 @@
-node_modules/.package-lock.json
+node_modules
 node_modules/.bin/tsc
 node_modules/.bin/tsc.cmd
 node_modules/.bin/tsc.ps1
