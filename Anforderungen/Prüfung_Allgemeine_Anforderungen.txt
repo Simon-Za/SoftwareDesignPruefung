@@ -29,7 +29,7 @@ Abgabe Möglichkeiten:
   3.8. Design Patterns wie Data Access Objects (DAO) oder Data Transfer Objects (DTO) können bei der Persistierung oder beim Laden von Daten hilfreich sein.	//nicht zwingend, gilt als Tipp
 4. Testen:
   4.1. Die Applikation soll mindestens einen ausführbaren und sinnvollen Unit Test besitzen.	
-    - zum Beispiel: das Validieren eines Benutzernamen oder das korrekte Erzeugen eines Nullobjekts.	//z.B. das Valiedieren eines Usernames/E-Mail/Name/Uhrzeit  //"npm run test"
+    - zum Beispiel: das Validieren eines Benutzernamen oder das korrekte Erzeugen eines Nullobjekts.	//z.B. das Validieren eines Usernames/E-Mail/Name/Uhrzeit  //"npm run test"
 
 Sprache:
 - Der gesamte Quellcode muss in Englisch sein 
