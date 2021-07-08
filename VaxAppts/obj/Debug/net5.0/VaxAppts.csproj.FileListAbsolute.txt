@@ -1,0 +1,16 @@
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.csprojAssemblyReference.cache
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.GeneratedMSBuildEditorConfig.editorconfig
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.AssemblyInfoInputs.cache
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.AssemblyInfo.cs
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.csproj.CoreCompileInputs.cache
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.exe
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.deps.json
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.runtimeconfig.json
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.runtimeconfig.dev.json
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.dll
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\ref\VaxAppts.dll
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\bin\Debug\net5.0\VaxAppts.pdb
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.dll
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\ref\VaxAppts.dll
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.pdb
+D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\obj\Debug\net5.0\VaxAppts.genruntimeconfig.cache
