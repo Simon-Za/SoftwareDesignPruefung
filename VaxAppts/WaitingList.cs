@@ -21,7 +21,7 @@ namespace VaxAppts
                 backToHomescreen();
             }
         }
-        public static void enterCredentials()
+        private static void enterCredentials()
         {
             Console.WriteLine("\u2022 Please enter your credentials below");
 
@@ -40,7 +40,7 @@ namespace VaxAppts
             Console.Write("Address: ");
             String userAddress = Console.ReadLine();
         }
-        public static void backToHomescreen()
+        private static void backToHomescreen()
         {
             MainClass.startMenu();
         }

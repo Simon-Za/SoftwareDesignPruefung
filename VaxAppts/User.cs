@@ -4,7 +4,6 @@ namespace VaxAppts
 {
     public class User
     {
-
         public static void adminLogin()
         {
             String _adminID = "VaxMaster69";

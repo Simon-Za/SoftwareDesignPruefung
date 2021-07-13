@@ -8,7 +8,6 @@ namespace VaxAppts
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             startMenu();
-
         }
         public static void startMenu()
         {

@@ -93,3 +93,5 @@ Hierbei gilt das Prinzip First-In / First-Out, der Erste in der Warteliste, beko
 
 //Vllt noch Impfstoff Auwahl?
 //Balkendiagramm in Konsole
+//Singleton maybe für Terminliste?
+//Modul Uhrzeiteingabe
