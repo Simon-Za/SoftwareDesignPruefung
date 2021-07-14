@@ -43,9 +43,7 @@ namespace VaxAppts
             Console.WriteLine("Remember to enter your date like this: YYYY, MM, DD");
             Console.WriteLine("___________________________________________________________________");
             Console.WriteLine("");
-            //hier maybe einfach ne Eingabe, die mit schon erstellten Tagen abgleicht (wenn Tag schon vergeben: Meldung ggf. Option Tag zu löschen?? vllt lieber bei 2)
 
-            //hier Datei erst lesen und schauen, ob Tag schon da, wenn ja: Message "gibt Tag schon, neue Uhrzeit dafür?"
             if (DateTime.TryParse(Console.ReadLine(), out userDate))        //Source: https://stackoverflow.com/questions/42075554/inputing-a-date-from-console-in-c-sharp
             {
                 date = userDate;    //check here if date has already been created
@@ -53,29 +51,32 @@ namespace VaxAppts
                 var apptsFile = new Appointments();
                 var ser0 = new XmlSerializer(typeof(Appointments));
 
-                TextReader reader0 = new StreamReader(apptsFile.path);
-                object obj0 = ser0.Deserialize(reader0);
-                apptsFile = (Appointments)obj0;
-                reader0.Dispose();
-
-                for (int h = 0; h < apptsFile.Dates.Count(); h++)
+                if (File.Exists(apptsFile.path))
                 {
-                    if (date == apptsFile.Dates.ElementAt(h).day)
-                    {
-                        Console.WriteLine("There are already appointments for this day. Would you like to add some?");
-                        Console.WriteLine("_____________________________________________________________________");
-                        Console.WriteLine("");
-                        Console.WriteLine("1. Add new appointments");
-                        Console.WriteLine("2. Enter new day");
-                        String adminSelect0 = Console.ReadLine();
+                    TextReader reader0 = new StreamReader(apptsFile.path);
+                    object obj0 = ser0.Deserialize(reader0);
+                    apptsFile = (Appointments)obj0;
+                    reader0.Dispose();
 
-                        if (adminSelect0 == "1")
+                    for (int h = 0; h < apptsFile.Dates.Count(); h++)
+                    {
+                        if (date == apptsFile.Dates.ElementAt(h).day)
                         {
-                            break;
-                        }
-                        else if (adminSelect0 == "2")
-                        {
-                            createNewAppt();
+                            Console.WriteLine("There are already appointments for this day. Would you like to add some more?");
+                            Console.WriteLine("_______________________________________________________________________");
+                            Console.WriteLine("");
+                            Console.WriteLine("1. Add new appointments");
+                            Console.WriteLine("2. Enter new day");
+                            String adminSelect0 = Console.ReadLine();
+
+                            if (adminSelect0 == "1")
+                            {
+                                break;
+                            }
+                            else if (adminSelect0 == "2")
+                            {
+                                createNewAppt();
+                            }
                         }
                     }
                 }
@@ -103,12 +104,6 @@ namespace VaxAppts
                 writeAppts(date, dateEnd, appts, frequency, ts);
 
 
-
-
-
-
-
-
                 Console.WriteLine("");
                 Console.WriteLine("Would you like to create another appointment or go back to the menu?");
                 Console.WriteLine("___________________________________________________________________");
@@ -125,8 +120,6 @@ namespace VaxAppts
                 {
                     adminScreen();
                 }
-
-
             }
             else
             {
@@ -168,7 +161,7 @@ namespace VaxAppts
         public static int enterNoOfAppts()
         {
             int numberOfAppts;
-            Console.WriteLine("How many appointments do you want for this time?");
+            Console.WriteLine("How many appointments do you want per appointment?");
             Console.WriteLine("_____________________________________________");
             Console.WriteLine("");
             numberOfAppts = Convert.ToInt32(Console.ReadLine());
@@ -184,72 +177,74 @@ namespace VaxAppts
             return frequencyOfAppts;
         }
 
-
         public static void writeAppts(DateTime date, DateTime dateEnd, int appts, int frequency, TimeSpan ts)
         {
             int tsMins = ts.Minutes + ts.Hours * 60;
-            int apptCount = tsMins/frequency;
-            Console.WriteLine("TimeSpan / Frequenz: " + apptCount);
-
+            int apptCount = tsMins / frequency; // 3 = 60/20
 
             var newAppt = new Appointments();
             var ser = new XmlSerializer(typeof(Appointments));
 
-            if (!File.Exists(newAppt.path))
+            for (int m = 0; m < apptCount; m++)
             {
-                newAppt.Dates = new List<Date>
+                DateTime forDate = date;
+                DateTime forDateEnd = dateEnd;
+                int addMin = m * frequency;
+                forDate = forDate.AddMinutes(addMin);
+
+                forDateEnd = date.AddMinutes((m + 1) * frequency);
+
+                if (!File.Exists(newAppt.path))
+                {
+                    newAppt.Dates = new List<Date>
                     {
-                    new Date(date)
+                    new Date(forDate)
                     };
 
-                using StringWriter TextWriter = new StringWriter();
-                ser.Serialize(TextWriter, newAppt);
-                File.WriteAllText(newAppt.path, TextWriter.ToString());
-                TextWriter.Dispose();
-            }
-
-            TextReader reader = new StreamReader(newAppt.path);
-            object obj = ser.Deserialize(reader);
-            newAppt = (Appointments)obj;
-
-
-            DateTime max = new DateTime();
-            for (int j = 0; j < newAppt.Dates.Count(); j++)
-            {
-                if (newAppt.Dates.ElementAt(j).day > max)
-                {
-                    max = newAppt.Dates.ElementAt(j).day;
+                    using StringWriter TextWriter = new StringWriter();
+                    ser.Serialize(TextWriter, newAppt);
+                    File.WriteAllText(newAppt.path, TextWriter.ToString());
+                    TextWriter.Dispose();
                 }
-            }
 
+                TextReader reader = new StreamReader(newAppt.path);
+                object obj = ser.Deserialize(reader);
+                newAppt = (Appointments)obj;
 
-            for (int k = 0; k < newAppt.Dates.Count(); k++)
-            {
-                if (date <= newAppt.Dates.ElementAt(k).day)
+                DateTime max = new DateTime();
+                for (int j = 0; j < newAppt.Dates.Count(); j++)
                 {
-                    newAppt.Dates.Insert(k, new Date(date, appts));
-                    break;
+                    if (newAppt.Dates.ElementAt(j).day > max)
+                    {
+                        max = newAppt.Dates.ElementAt(j).day;
+                    }
                 }
-                else if (date >= max)
+                for (int k = 0; k < newAppt.Dates.Count(); k++)
                 {
-                    newAppt.Dates.Insert(newAppt.Dates.Count(), new Date(date, appts));
+                    if (forDate <= newAppt.Dates.ElementAt(k).day)
+                    {
+                        newAppt.Dates.Insert(k, new Date(forDate, appts, forDateEnd));
+                        break;
+                    }
+                    else if (forDate >= max)
+                    {
+                        newAppt.Dates.Insert(newAppt.Dates.Count(), new Date(forDate, appts, forDateEnd));
 
-                    break;
+                        break;
+                    }
                 }
-            }
-            reader.Dispose();
+                reader.Dispose();
 
+                using StringWriter TextWriter2 = new StringWriter();
+                ser.Serialize(TextWriter2, newAppt);
+                File.WriteAllText(newAppt.path, TextWriter2.ToString());
+                TextWriter2.Dispose();
+            }
             Console.WriteLine("___________");
             for (int l = 0; l < newAppt.Dates.Count(); l++)
             {
                 Console.WriteLine(newAppt.Dates[l].day + "(" + newAppt.Dates[l].numberOfAppts + ")");
             }
-
-
-            using StringWriter TextWriter2 = new StringWriter();
-            ser.Serialize(TextWriter2, newAppt);
-            File.WriteAllText(newAppt.path, TextWriter2.ToString());
-            TextWriter2.Dispose();
         }
     }
 }

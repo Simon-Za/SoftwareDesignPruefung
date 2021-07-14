@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-16"?>
 <Appointments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <path>D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\AppointmentsXml.xml</path>
-  <Dates />
+  <Dates>
+    <Date>
+      <day>2021-07-14T05:00:00</day>
+      <apptEnd>2021-07-14T05:20:00</apptEnd>
+      <numberOfAppts>5</numberOfAppts>
+    </Date>
+  </Dates>
 </Appointments>

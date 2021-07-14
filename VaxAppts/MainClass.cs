@@ -12,7 +12,7 @@ namespace VaxAppts
         public static void startMenu()
         {
             //appointmentsAvailable auf false wenn keine Termine mehr (jedes Mal file checken und schauen ob Array != 0 ?)
-            bool appointmentsAvailable = false;
+            bool appointmentsAvailable = true;
             if (appointmentsAvailable)
             {
                 Console.WriteLine("__________________________");

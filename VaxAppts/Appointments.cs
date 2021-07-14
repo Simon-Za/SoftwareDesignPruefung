@@ -22,31 +22,22 @@ namespace VaxAppts
 
         public Date(DateTime y)
         {
-            day = y;
+            this.day = y;
         }
         public Date(DateTime y, int appts)
         {
-            day = y;
-            numberOfAppts = appts;
+            this.day = y;
+            this.numberOfAppts = appts;
+        }
+         public Date(DateTime y, int appts, DateTime end)
+        {
+            this.day = y;
+            this.numberOfAppts = appts;
+            this.apptEnd = end;
         }
         public Date()
         {
 
         }
     }
-    /* public class TimeofDay
-    {
-        public String time;
-        public DateTime apptEnd;
-        public int numberOfAppts;
-        public TimeofDay(String z, int n)
-        {
-            time = z;
-            numberOfAppts = n;
-        }
-        public TimeofDay()
-        {
-
-        }
-    } */
 }
