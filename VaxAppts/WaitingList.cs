@@ -65,13 +65,13 @@ namespace VaxAppts
             }
             else
             {
-                TextReader reader = new StreamReader(newWaiter.path);
-                object obj = serW.Deserialize(reader);
+                TextReader readerW = new StreamReader(newWaiter.path);
+                object obj = serW.Deserialize(readerW);
                 newWaiter = (WaitingListObject)obj;
 
                 newWaiter.Waiters.Insert(newWaiter.Waiters.Count(), new WaitingUser(userMail, userFirstName, userLastName, userBirthday, userPhoneNumber, userAddress));
 
-                reader.Dispose();
+                readerW.Dispose();
 
                 using StringWriter TextWriter = new StringWriter();
                 serW.Serialize(TextWriter, newWaiter);

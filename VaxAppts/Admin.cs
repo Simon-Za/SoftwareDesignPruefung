@@ -167,6 +167,7 @@ namespace VaxAppts
                     //hier noch Bedingung, falls zu druckendes Datum 100 % calc hat
                 }
                 saveDate = newAppt.Dates[u].day;
+                reader.Dispose();
             }
             Console.WriteLine("________________");
             Console.WriteLine("");
@@ -390,6 +391,7 @@ namespace VaxAppts
             Console.WriteLine(perc / percCount);
             //Console.WriteLine(perc);
             //Console.WriteLine(percCount);
+            reader.Dispose();
             return perc / percCount;
         }
     }
