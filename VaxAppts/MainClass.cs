@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Xml.Serialization;
+using System.Text;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace VaxAppts
 {
@@ -11,8 +16,11 @@ namespace VaxAppts
         }
         public static void startMenu()
         {
-            //appointmentsAvailable auf false wenn keine Termine mehr (jedes Mal file checken und schauen ob Array != 0 ?)
-            bool appointmentsAvailable = true;
+
+            bool appointmentsAvailable;
+
+            appointmentsAvailable = checkIfApptsAv();
+
             if (appointmentsAvailable)
             {
                 Console.WriteLine("__________________________");
@@ -64,6 +72,26 @@ namespace VaxAppts
                 }
             }
 
+        }
+        public static bool checkIfApptsAv()
+        {
+            bool isAvailable;
+
+            var newAppt = new Appointments();
+            var ser = new XmlSerializer(typeof(Appointments));
+
+            TextReader reader = new StreamReader(newAppt.path);
+            object obj = ser.Deserialize(reader);
+            newAppt = (Appointments)obj;
+
+            if(newAppt.Dates.Count() <= 0)
+            {
+                isAvailable = false;
+            }
+            else{
+                isAvailable = true;
+            }
+            return isAvailable;
         }
     }
 }

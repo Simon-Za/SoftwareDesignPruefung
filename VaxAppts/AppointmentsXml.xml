@@ -3,9 +3,10 @@
   <path>D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\AppointmentsXml.xml</path>
   <Dates>
     <Date>
-      <day>2021-07-14T05:00:00</day>
-      <apptEnd>2021-07-14T05:20:00</apptEnd>
-      <numberOfAppts>5</numberOfAppts>
+      <day>2021-07-18T08:00:00</day>
+      <apptEnd>2021-07-18T08:20:00</apptEnd>
+      <numberOfAppts>2</numberOfAppts>
+      <numberOfTotalAppts>2</numberOfTotalAppts>
     </Date>
   </Dates>
 </Appointments>

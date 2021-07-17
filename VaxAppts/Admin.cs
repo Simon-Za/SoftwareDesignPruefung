@@ -67,7 +67,7 @@ namespace VaxAppts
                             Console.WriteLine("");
                             Console.WriteLine("1. Add new appointments");
                             Console.WriteLine("2. Enter new day");
-                            String adminSelect0 = Console.ReadLine();
+                            string adminSelect0 = Console.ReadLine();
 
                             if (adminSelect0 == "1")
                             {
@@ -110,7 +110,7 @@ namespace VaxAppts
                 Console.WriteLine("");
                 Console.WriteLine("1. Create another appointment");
                 Console.WriteLine("2. Go back to menu");
-                String adminSelect = Console.ReadLine();
+                string adminSelect = Console.ReadLine();
 
                 if (adminSelect == "1")
                 {
@@ -133,7 +133,85 @@ namespace VaxAppts
             Console.WriteLine("\u2022 Please select the day you want to see");
             Console.WriteLine("_______________________________________");
             Console.WriteLine("");
+
             //hier Dok auslesen und Datumsobjekte darstellen
+            var newAppt = new Appointments();
+            var ser = new XmlSerializer(typeof(Appointments));
+
+            TextReader reader = new StreamReader(newAppt.path);
+            object obj = ser.Deserialize(reader);
+            newAppt = (Appointments)obj;
+
+            DateTime saveDate = new DateTime();
+            for (int u = 0; u < newAppt.Dates.Count(); u++)
+            {
+                //calculate percentages here?? Bc when 100% -> das anzeigen
+
+
+                if (saveDate.Day != newAppt.Dates[u].day.Day || saveDate.Month != newAppt.Dates[u].day.Month)
+                {
+                    float dayPerc = 0.0f;
+                    //
+                    float amountAppt = newAppt.Dates[u].numberOfTotalAppts;
+                    //
+
+                    Console.WriteLine(calcPercentage(newAppt.Dates[u]) * 100 / amountAppt);
+
+                    dayPerc = calcPercentage(newAppt.Dates[u]);
+                    if (dayPerc == 0)
+                    {
+                        Console.Write("[100% occupied] ");
+                    }
+                    Console.WriteLine(newAppt.Dates[u].day.Day + "." + newAppt.Dates[u].day.Month + "." + newAppt.Dates[u].day.Year + ", " + newAppt.Dates[u].day.DayOfWeek);
+
+                    //hier noch Bedingung, falls zu druckendes Datum 100 % calc hat
+                }
+                saveDate = newAppt.Dates[u].day;
+            }
+            Console.WriteLine("________________");
+            Console.WriteLine("");
+
+
+            //hier werden die Tage ausgelesen und geschaut ob Eingabe richtiger Tag ist
+
+            DateTime adminDateTime;
+
+            if (DateTime.TryParse(Console.ReadLine(), out adminDateTime))
+            {
+                var newAppt0 = new Appointments();
+                var ser0 = new XmlSerializer(typeof(Appointments));
+
+                TextReader reader0 = new StreamReader(newAppt0.path);
+                object obj0 = ser.Deserialize(reader0);
+                newAppt0 = (Appointments)obj0;
+
+                bool foundDate = false;
+
+                for (int n = 0; n < newAppt0.Dates.Count(); n++)
+                {
+                    if (adminDateTime.Day == newAppt0.Dates.ElementAt(n).day.Day && adminDateTime.Month == newAppt0.Dates.ElementAt(n).day.Month && adminDateTime.Year == newAppt0.Dates.ElementAt(n).day.Year)
+                    {
+                        reader0.Dispose();
+                        showTimes(adminDateTime);
+                        foundDate = true;
+                        break;
+                    }
+                }
+                if (!foundDate)
+                {
+                    Console.WriteLine("This day does not exist");
+                    dayOverview();
+                }
+                reader0.Dispose();
+            }
+            else
+            {
+                Console.WriteLine("This day is not a valid day");
+                dayOverview();
+            }
+
+
+
         }
         private static void viewStats()
         {
@@ -245,6 +323,74 @@ namespace VaxAppts
             {
                 Console.WriteLine(newAppt.Dates[l].day + "(" + newAppt.Dates[l].numberOfAppts + ")");
             }
+        }
+        public static void showTimes(DateTime adminDateTime)
+        {
+            Console.WriteLine("_________");
+            var newAppt = new Appointments();
+            var ser = new XmlSerializer(typeof(Appointments));
+
+            TextReader reader = new StreamReader(newAppt.path);
+            object obj = ser.Deserialize(reader);
+            newAppt = (Appointments)obj;
+
+            for (int n = 0; n < newAppt.Dates.Count(); n++)
+            {
+                if (adminDateTime.Day == newAppt.Dates.ElementAt(n).day.Day && adminDateTime.Month == newAppt.Dates.ElementAt(n).day.Month && adminDateTime.Year == newAppt.Dates.ElementAt(n).day.Year)
+                {
+                    Console.WriteLine(newAppt.Dates[n].day.Hour + ":" + newAppt.Dates[n].day.Minute + "(" + newAppt.Dates[n].numberOfAppts + ")");
+                }
+            }
+            reader.Dispose();
+
+            Console.WriteLine("");
+            Console.WriteLine("_________");
+            Console.WriteLine("Wanna see another day?");
+            Console.WriteLine("______________________");
+            Console.WriteLine("1. Yes");
+            Console.WriteLine("2. Go back to menu");
+            string adminSelect = Console.ReadLine();
+
+            if (adminSelect == "1")
+            {
+                dayOverview();
+            }
+            else if (adminSelect == "2")
+            {
+                adminScreen();
+            }
+
+        }
+        public static float calcPercentage(Date calcDate)
+        {
+            var newAppt = new Appointments();
+            var ser = new XmlSerializer(typeof(Appointments));
+
+            TextReader reader = new StreamReader(newAppt.path);
+            object obj = ser.Deserialize(reader);
+            newAppt = (Appointments)obj;
+
+            float perc = 0.0f;
+            int percCount = 0;
+
+            //for (calcDate)
+            for (int u = 0; u < newAppt.Dates.Count(); u++)
+            {
+                if (calcDate.day.Day == newAppt.Dates[u].day.Day && calcDate.day.Month == newAppt.Dates[u].day.Month)
+                {
+                    perc += (float)calcDate.numberOfAppts / (float)calcDate.numberOfTotalAppts;
+                    //Console.WriteLine(calcDate.numberOfAppts);
+                    //Console.WriteLine(calcDate.numberOfTotalAppts);
+                    //Console.WriteLine(perc);
+                    //Console.WriteLine("Percentage für " + calcDate.day + " = " + perc * 100);
+                    percCount += 1;
+                    //Console.WriteLine("Yup, its calculating time");
+                }
+            }
+            Console.WriteLine(perc / percCount);
+            //Console.WriteLine(perc);
+            //Console.WriteLine(percCount);
+            return perc / percCount;
         }
     }
 }

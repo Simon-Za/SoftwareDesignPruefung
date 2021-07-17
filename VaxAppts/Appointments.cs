@@ -6,7 +6,7 @@ namespace VaxAppts
 {
     public class Appointments
     {
-        public String path = @"D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\AppointmentsXml.xml";
+        public string path = @"AppointmentsXml.xml";
         public List<Date> Dates;
         public Appointments()
         {
@@ -18,6 +18,7 @@ namespace VaxAppts
         public DateTime day; //Datum mit Zeitangabe
         public DateTime apptEnd;
         public int numberOfAppts;
+        public int numberOfTotalAppts;
         //public List<TimeofDay> Times;
 
         public Date(DateTime y)
@@ -34,6 +35,7 @@ namespace VaxAppts
             this.day = y;
             this.numberOfAppts = appts;
             this.apptEnd = end;
+            this.numberOfTotalAppts = appts;
         }
         public Date()
         {

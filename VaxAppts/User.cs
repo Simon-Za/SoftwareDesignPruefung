@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace VaxAppts
 {
@@ -11,8 +12,8 @@ namespace VaxAppts
     {
         public static void adminLogin()
         {
-            String _adminID = "VaxMaster69";
-            String _adminPassword = "VacciGang";
+            string _adminID = "VaxMaster69";
+            string _adminPassword = "VacciGang";
 
             //bei Bedarf kann hier noch Regex und Datenabgleich (dokument auslesen etc) rein
             Console.WriteLine("__________________________");
@@ -21,13 +22,13 @@ namespace VaxAppts
             Console.WriteLine("");
             Console.WriteLine("");
             Console.Write("Admin ID: ");
-            String adminEntry = Console.ReadLine();
+            string adminEntry = Console.ReadLine();
             if (adminEntry == "")
             {
                 MainClass.startMenu();
             }
             Console.Write("Password: ");
-            String passwordEntry = Console.ReadLine();
+            string passwordEntry = Console.ReadLine();
 
             if (adminEntry == _adminID && passwordEntry == _adminPassword)
             {
@@ -66,19 +67,19 @@ namespace VaxAppts
             DateTime saveDate = new DateTime();
             for (int u = 0; u < newAppt.Dates.Count(); u++)
             {
-                //muss irgendnen Limiter, dass die Tage nicht doppelt kommen und Appts zusammengerechnet werden (Appts müssen nicht zwingend in der Datumsanzeige dargestellt werden)
-                if (saveDate.Day != newAppt.Dates[u].day.Day || saveDate.Month != newAppt.Dates[u].day.Month)
+                if (newAppt.Dates[u].numberOfAppts <= 0)
+                {
+                    //do nothing (The date should not be shown)
+                }
+                else if (saveDate.Day != newAppt.Dates[u].day.Day || saveDate.Month != newAppt.Dates[u].day.Month)
                 {
                     Console.WriteLine(newAppt.Dates[u].day.Day + "." + newAppt.Dates[u].day.Month + "." + newAppt.Dates[u].day.Year + ", " + newAppt.Dates[u].day.DayOfWeek);
+                    saveDate = newAppt.Dates[u].day;
                 }
-
-                saveDate = newAppt.Dates[u].day;
-
             }
             reader.Dispose();
 
 
-            //hier iwie ne Auswahl? Einfach Datum eingeben?? Oder nummerieren? Gibt zu viele doe
             Console.WriteLine("");
             Console.WriteLine("Please enter the date you want to see available times to");
             Console.WriteLine("in the following format: DD/MM/YYYY");
@@ -101,6 +102,7 @@ namespace VaxAppts
                 {
                     if (userDateTime.Day == newAppt0.Dates.ElementAt(n).day.Day && userDateTime.Month == newAppt0.Dates.ElementAt(n).day.Month && userDateTime.Year == newAppt0.Dates.ElementAt(n).day.Year)
                     {
+                        reader0.Dispose();
                         showTimes(userDateTime);
                         foundDate = true;
                         break;
@@ -123,7 +125,6 @@ namespace VaxAppts
         public static void searchDate()
         {
             int caseID = 1;
-            //case, falls Tag nicht existiert und else
             Console.WriteLine("");
             Console.WriteLine("Please enter the date you're searching below");
             Console.WriteLine("Remember to use the correct format: DD/MM/YYYY");
@@ -135,8 +136,8 @@ namespace VaxAppts
                 var newAppt = new Appointments();
                 var ser = new XmlSerializer(typeof(Appointments));
 
-                TextReader reader = new StreamReader(newAppt.path);
-                object obj = ser.Deserialize(reader);
+                TextReader reader1 = new StreamReader(newAppt.path);
+                object obj = ser.Deserialize(reader1);
                 newAppt = (Appointments)obj;
 
                 bool foundDate = false;
@@ -145,6 +146,7 @@ namespace VaxAppts
                 {
                     if (userDateTime.Day == newAppt.Dates.ElementAt(n).day.Day && userDateTime.Month == newAppt.Dates.ElementAt(n).day.Month && userDateTime.Year == newAppt.Dates.ElementAt(n).day.Year)
                     {
+                        reader1.Dispose();
                         showTimes(userDateTime);
                         foundDate = true;
                         break;
@@ -154,7 +156,7 @@ namespace VaxAppts
                 {
                     dateNotFound(caseID);
                 }
-                reader.Dispose();
+                reader1.Dispose();
             }
             else
             {
@@ -168,8 +170,8 @@ namespace VaxAppts
             var newAppt = new Appointments();
             var ser = new XmlSerializer(typeof(Appointments));
 
-            TextReader reader = new StreamReader(newAppt.path);
-            object obj = ser.Deserialize(reader);
+            TextReader reader2 = new StreamReader(newAppt.path);
+            object obj = ser.Deserialize(reader2);
             newAppt = (Appointments)obj;
 
             for (int n = 0; n < newAppt.Dates.Count(); n++)
@@ -177,7 +179,6 @@ namespace VaxAppts
                 if (specificDate.Day == newAppt.Dates.ElementAt(n).day.Day && specificDate.Month == newAppt.Dates.ElementAt(n).day.Month && specificDate.Year == newAppt.Dates.ElementAt(n).day.Year)
                 {
                     Console.WriteLine(newAppt.Dates[n].day.Hour + ":" + newAppt.Dates[n].day.Minute + "(" + newAppt.Dates[n].numberOfAppts + ")");
-
                 }
 
                 /*  for (int f = 0; f < specificDate; f++)
@@ -185,7 +186,7 @@ namespace VaxAppts
                      Console.WriteLine(newAppt.Dates[f].day + "(" + newAppt.Dates[f].numberOfAppts + ")");
                  } */
             }
-            reader.Dispose();
+            reader2.Dispose();
 
             Console.WriteLine("");
             Console.WriteLine("Please pick a time you are comfortable with :)");
@@ -200,8 +201,8 @@ namespace VaxAppts
                 var newAppt1 = new Appointments();
                 var ser1 = new XmlSerializer(typeof(Appointments));
 
-                TextReader reader1 = new StreamReader(newAppt1.path);
-                object obj1 = ser.Deserialize(reader1);
+                TextReader reader3 = new StreamReader(newAppt1.path);
+                object obj1 = ser.Deserialize(reader3);
                 newAppt1 = (Appointments)obj1;
 
                 bool foundDate = false;
@@ -212,11 +213,20 @@ namespace VaxAppts
                     {
                         if (userTime.Hour == newAppt1.Dates.ElementAt(n).day.Hour && userTime.Minute == newAppt1.Dates.ElementAt(n).day.Minute && userTime.Second == newAppt1.Dates.ElementAt(n).day.Second)
                         {
+                            //hier schauen ob die Zeit appts frei hat
+                            if (newAppt1.Dates.ElementAt(n).numberOfAppts <= 0)
+                            {
+                                caseID = 5;
+                                timeNotFound(caseID, specificDate);
+
+                            }
+
                             foundDate = true;
-                            //registration(specificDate, userTime);
-                            Console.WriteLine("HIER KÖNNTE IHRE REGISTRIERUNG STEHEN");
-                            register(); 
-                            //break;
+                            TimeSpan apptTime = new TimeSpan(userTime.Hour, userTime.Minute, userTime.Second);
+                            DateTime apptDate = specificDate.Date.Add(apptTime);
+
+                            reader3.Dispose();
+                            register(apptDate);
                         }
 
                     }
@@ -225,7 +235,7 @@ namespace VaxAppts
                 {
                     timeNotFound(caseID, specificDate);
                 }
-                reader.Dispose();
+                reader3.Dispose();
             }
             else
             {
@@ -252,7 +262,7 @@ namespace VaxAppts
             Console.WriteLine("2. Go back to menu");
 
 
-            String userSelect = Console.ReadLine();
+            string userSelect = Console.ReadLine();
             if (userSelect == "1")
             {
                 if (caseID == 0)
@@ -279,13 +289,17 @@ namespace VaxAppts
             {
                 Console.WriteLine("That is not a valid time");
             }
+            else if (caseID == 5)
+            {
+                Console.WriteLine("There are no appointments available at this time");
+            }
             Console.WriteLine("Try to enter it again or leave");
             Console.WriteLine("_____________________________");
             Console.WriteLine("");
             Console.WriteLine("1. Try again");
             Console.WriteLine("2. Go back to menu");
 
-            String userSelect = Console.ReadLine();
+            string userSelect = Console.ReadLine();
             if (userSelect == "1")
             {
                 showTimes(specificDate);
@@ -295,9 +309,148 @@ namespace VaxAppts
                 MainClass.startMenu();
             }
         }
-        public static void register()
+        public static void register(DateTime apptDate)
         {
+            string email;
+            string fname;
+            string lname;
+            string dOB;
+            string phoneNo;
+            string address;
 
+
+            Console.WriteLine("Welcome to the registration!");
+            Console.WriteLine("Please enter your credentials below:");
+            Console.WriteLine("___________________________________");
+            Console.WriteLine("");
+
+            Console.Write("E-Mail: ");
+            email = eMail();
+
+            Console.Write("First Name: ");
+            fname = Console.ReadLine();
+
+            Console.Write("Last Name: ");
+            lname = Console.ReadLine();
+
+            Console.Write("Date of birth: ");
+            dOB = Console.ReadLine();
+
+            Console.Write("Phone number: ");
+            phoneNo = Console.ReadLine();
+
+            Console.Write("Address: ");
+            address = Console.ReadLine();
+
+            //hier entsprechenden Termin austragen und Daten in Dok eintragen
+            var newAppt4 = new Appointments();
+            var ser4 = new XmlSerializer(typeof(Appointments));
+
+            TextReader reader4 = new StreamReader(newAppt4.path);
+            object obj = ser4.Deserialize(reader4);
+            newAppt4 = (Appointments)obj;
+
+            for (int n = 0; n < newAppt4.Dates.Count(); n++)
+            {
+                if (newAppt4.Dates.ElementAt(n).day == apptDate)
+                {
+                    newAppt4.Dates.ElementAt(n).numberOfAppts -= 1;
+                }
+            }
+            reader4.Dispose();
+
+            using StringWriter TextWriter = new StringWriter();
+            ser4.Serialize(TextWriter, newAppt4);
+            File.WriteAllText(newAppt4.path, TextWriter.ToString());
+            TextWriter.Dispose();
+
+
+
+            var registrFile = new Registrations();
+            var ser = new XmlSerializer(typeof(Registrations));
+
+            if (!File.Exists(registrFile.path))
+            {
+                registrFile.Users = new List<UserRegistered>
+                    {
+                    new UserRegistered(apptDate, email, fname, lname, dOB, phoneNo, address)
+                    };
+
+                using StringWriter TextWriter1 = new StringWriter();
+                ser.Serialize(TextWriter1, registrFile);
+                File.WriteAllText(registrFile.path, TextWriter1.ToString());
+                TextWriter1.Dispose();
+            }
+            else
+            {
+                //hier file auslesen und User einordnen
+                TextReader reader5 = new StreamReader(registrFile.path);
+                object obj1 = ser.Deserialize(reader5);
+                registrFile = (Registrations)obj1;
+
+                registrFile.Users.Insert(registrFile.Users.Count(), new UserRegistered(apptDate, email, fname, lname, dOB, phoneNo, address));
+
+                reader5.Dispose();
+
+
+                using StringWriter TextWriter2 = new StringWriter();
+                ser.Serialize(TextWriter2, registrFile);
+                File.WriteAllText(registrFile.path, TextWriter2.ToString());
+                TextWriter2.Dispose();
+
+            }
+
+            Console.WriteLine("Registration complete!");
+            Environment.Exit(0);
+        }
+
+        public static string eMail()
+        {
+            string email = Console.ReadLine();
+
+
+
+            if (!validateEmail(email))
+            {
+                Console.WriteLine("The email is invalid");
+                Console.WriteLine("Please try again");
+                Console.WriteLine("_________________");
+                eMail();
+            }
+            else
+            {
+                //Console.WriteLine("The email is valid");
+            }
+
+            var registrationFile = new Registrations();
+            var ser0 = new XmlSerializer(typeof(Registrations));
+
+            if (File.Exists(registrationFile.path))
+            {
+                TextReader reader6 = new StreamReader(registrationFile.path);
+                object obj = ser0.Deserialize(reader6);
+                registrationFile = (Registrations)obj;
+
+                for (int k = 0; k < registrationFile.Users.Count(); k++)
+                {
+                    if (registrationFile.Users.ElementAt(k).email == email)
+                    {
+                        Console.WriteLine("This E-Mail is already registered");
+                        Console.WriteLine("Please try another one");
+                        Console.WriteLine("_____________________");
+                        eMail();
+                    }
+                }
+                reader6.Dispose();
+            }
+            return email;
+        }
+        public static bool validateEmail(string email)
+        {
+            Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", RegexOptions.CultureInvariant | RegexOptions.Singleline); //Source: https://www.tutorialspoint.com/how-to-validate-an-email-address-in-chash
+            bool isValidEmail = regex.IsMatch(email);
+
+            return isValidEmail;
         }
     }
 }

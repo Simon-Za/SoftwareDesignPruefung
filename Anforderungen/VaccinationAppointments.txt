@@ -91,7 +91,7 @@ Hierbei gilt das Prinzip First-In / First-Out, der Erste in der Warteliste, beko
 
 
 
-//Vllt noch Impfstoff Auwahl?
+//Vllt noch Impfstoff Auswahl?
 //Balkendiagramm in Konsole
 //Singleton maybe für Terminliste?
 //Modul Uhrzeiteingabe
