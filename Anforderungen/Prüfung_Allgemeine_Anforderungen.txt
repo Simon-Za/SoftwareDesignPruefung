@@ -42,9 +42,4 @@ Hinweise:
 - Seit entsprechend kreativ, wenn es darum geht, welche Attribute und Methoden bei den Klassen Sinn machen.
 - Attribute und Methoden können entsprechend sinnvoll sein, auch wenn diese nicht direkt aus dem Aufgabentext ersichtlich sind.
 
-//Mail für Anforderungen schicken! (dass ersieht dass man engaged ist)
-
-//Kreativ sein!
-
-
 

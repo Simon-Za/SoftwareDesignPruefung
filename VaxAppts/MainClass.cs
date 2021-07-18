@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-using System.Text;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -42,18 +40,20 @@ namespace VaxAppts
             Console.WriteLine("3. Admin Log-In");
             int startSelect = Convert.ToInt32(Console.ReadLine());
 
+            User user = new User();
+
             if (appointmentsAvailable)
             {
                 switch (startSelect)
                 {
                     case 1:
-                        User.viewAvailableDates();
+                        user.viewAvailableDates();
                         break;
                     case 2:
-                        User.searchDate();
+                        user.searchDate();
                         break;
                     case 3:
-                        User.adminLogin();
+                        user.adminLogin();
                         break;
                 }
             }
@@ -62,12 +62,13 @@ namespace VaxAppts
                 switch (startSelect)
                 {
                     case 1:
-                        WaitingList.WaitingListStartScreen();
+                        WaitingList wait = new WaitingList();
+                        wait.WaitingListStartScreen();
                         break;
                     case 2:
                         break;
                     case 3:
-                        User.adminLogin();
+                        user.adminLogin();
                         break;
                 }
             }
@@ -75,22 +76,44 @@ namespace VaxAppts
         }
         public static bool checkIfApptsAv()
         {
-            bool isAvailable;
+            bool isAvailable = false;
 
             var newAppt = new Appointments();
             var ser = new XmlSerializer(typeof(Appointments));
 
-            TextReader reader = new StreamReader(newAppt.path);
-            object obj = ser.Deserialize(reader);
-            newAppt = (Appointments)obj;
+            if (File.Exists(newAppt.path))
+            {
+                TextReader reader = new StreamReader(newAppt.path);
+                object obj = ser.Deserialize(reader);
+                newAppt = (Appointments)obj;
+                reader.Dispose();
 
-            if(newAppt.Dates.Count() <= 0)
+                if (newAppt.Dates.Count() <= 0)
+                {
+                    isAvailable = false;
+                }
+                else
+                {
+                    int apptNo = 0;
+                    for (int d = 0; d < newAppt.Dates.Count(); d++)
+                    {
+                        if (newAppt.Dates.ElementAt(d).numberOfAppts > 0)
+                        {
+                            apptNo += newAppt.Dates.ElementAt(d).numberOfAppts;
+                        }
+                    }
+                    if (apptNo > 0)
+                    {
+                        isAvailable = true;
+
+                    }
+                }
+            }
+            else
             {
                 isAvailable = false;
             }
-            else{
-                isAvailable = true;
-            }
+
             return isAvailable;
         }
     }

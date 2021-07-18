@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+
+//Data Acces Object
 
 namespace VaxAppts
 {

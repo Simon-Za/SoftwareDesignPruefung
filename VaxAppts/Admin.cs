@@ -1,6 +1,5 @@
 using System;
 using System.Xml.Serialization;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,20 @@ namespace VaxAppts
 {
     public class Admin
     {
-        public static void adminScreen()
+        //Singleton
+        private static Admin instance = new Admin();
+        private Admin() { }
+        public static Admin getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Admin();
+            }
+            return instance;
+        }
+
+
+        public void adminScreen()
         {
             Console.WriteLine("\u2022 Welcome back Vaxmaster69");
             Console.WriteLine("___________________________");
@@ -32,7 +44,7 @@ namespace VaxAppts
                     break;
             }
         }
-        public static void createNewAppt()
+        private void createNewAppt()
         {
             //DateTime dt = new DateTime();       //Source: https://www.tutorialsteacher.com/csharp/csharp-datetime
             DateTime userDate;
@@ -40,7 +52,7 @@ namespace VaxAppts
             DateTime dateEnd = new DateTime();
 
             Console.WriteLine("\u2022 Please tell me for which day you want to create a new appointment");
-            Console.WriteLine("Remember to enter your date like this: YYYY, MM, DD");
+            Console.WriteLine("Remember to enter your date like this: DD, MM, YYYY");
             Console.WriteLine("___________________________________________________________________");
             Console.WriteLine("");
 
@@ -57,6 +69,8 @@ namespace VaxAppts
                     object obj0 = ser0.Deserialize(reader0);
                     apptsFile = (Appointments)obj0;
                     reader0.Dispose();
+
+
 
                     for (int h = 0; h < apptsFile.Dates.Count(); h++)
                     {
@@ -84,6 +98,7 @@ namespace VaxAppts
                 Console.WriteLine(date.DayOfWeek + ", " + date.Day + "." + date.Month + "." + date.Year);
 
                 Console.WriteLine("Now enter the desired time period");
+                Console.WriteLine("Remember to type a time like this HH/MM, press Enter and enter the next one");
                 Console.WriteLine("_________________________________");
                 Console.WriteLine("");
 
@@ -128,7 +143,7 @@ namespace VaxAppts
             }
 
         }
-        private static void dayOverview()
+        private void dayOverview()
         {
             Console.WriteLine("\u2022 Please select the day you want to see");
             Console.WriteLine("_______________________________________");
@@ -141,6 +156,9 @@ namespace VaxAppts
             TextReader reader = new StreamReader(newAppt.path);
             object obj = ser.Deserialize(reader);
             newAppt = (Appointments)obj;
+            reader.Dispose();
+
+
 
             DateTime saveDate = new DateTime();
             for (int u = 0; u < newAppt.Dates.Count(); u++)
@@ -167,7 +185,7 @@ namespace VaxAppts
                     //hier noch Bedingung, falls zu druckendes Datum 100 % calc hat
                 }
                 saveDate = newAppt.Dates[u].day;
-                reader.Dispose();
+                //reader.Dispose();
             }
             Console.WriteLine("________________");
             Console.WriteLine("");
@@ -185,6 +203,8 @@ namespace VaxAppts
                 TextReader reader0 = new StreamReader(newAppt0.path);
                 object obj0 = ser.Deserialize(reader0);
                 newAppt0 = (Appointments)obj0;
+                reader0.Dispose();
+
 
                 bool foundDate = false;
 
@@ -192,7 +212,7 @@ namespace VaxAppts
                 {
                     if (adminDateTime.Day == newAppt0.Dates.ElementAt(n).day.Day && adminDateTime.Month == newAppt0.Dates.ElementAt(n).day.Month && adminDateTime.Year == newAppt0.Dates.ElementAt(n).day.Year)
                     {
-                        reader0.Dispose();
+                        //reader0.Dispose();
                         showTimes(adminDateTime);
                         foundDate = true;
                         break;
@@ -203,7 +223,7 @@ namespace VaxAppts
                     Console.WriteLine("This day does not exist");
                     dayOverview();
                 }
-                reader0.Dispose();
+                // reader0.Dispose();
             }
             else
             {
@@ -214,7 +234,7 @@ namespace VaxAppts
 
 
         }
-        private static void viewStats()
+        private void viewStats()
         {
             Console.WriteLine("\u2022 Welcome to general statistics!");
             Console.WriteLine("________________________________");
@@ -222,7 +242,7 @@ namespace VaxAppts
             //yup, hier ebenfalls Dok auslesen (Braucht Stats n eigenes Dok oder alles zsm?)
         }
 
-        public static DateTime enterTimeSpan(DateTime date)
+        private DateTime enterTimeSpan(DateTime date)
         {
             TimeSpan userTime = new TimeSpan(0, 0, 0);
 
@@ -237,7 +257,7 @@ namespace VaxAppts
             }
             return date;
         }
-        public static int enterNoOfAppts()
+        private int enterNoOfAppts()
         {
             int numberOfAppts;
             Console.WriteLine("How many appointments do you want per appointment?");
@@ -246,7 +266,7 @@ namespace VaxAppts
             numberOfAppts = Convert.ToInt32(Console.ReadLine());
             return numberOfAppts;
         }
-        public static int enterFrequencyOfAppts()
+        private int enterFrequencyOfAppts()
         {
             int frequencyOfAppts;
             Console.WriteLine("Now enter how many minutes one appointment should take");
@@ -256,7 +276,7 @@ namespace VaxAppts
             return frequencyOfAppts;
         }
 
-        public static void writeAppts(DateTime date, DateTime dateEnd, int appts, int frequency, TimeSpan ts)
+        private void writeAppts(DateTime date, DateTime dateEnd, int appts, int frequency, TimeSpan ts)
         {
             int tsMins = ts.Minutes + ts.Hours * 60;
             int apptCount = tsMins / frequency; // 3 = 60/20
@@ -277,47 +297,132 @@ namespace VaxAppts
                 {
                     newAppt.Dates = new List<Date>
                     {
-                    new Date(forDate)
+                    new Date(forDate, appts, forDateEnd)
                     };
 
-                    using StringWriter TextWriter = new StringWriter();
+                    StringWriter TextWriter = new StringWriter();
                     ser.Serialize(TextWriter, newAppt);
                     File.WriteAllText(newAppt.path, TextWriter.ToString());
                     TextWriter.Dispose();
                 }
-
-                TextReader reader = new StreamReader(newAppt.path);
-                object obj = ser.Deserialize(reader);
-                newAppt = (Appointments)obj;
-
-                DateTime max = new DateTime();
-                for (int j = 0; j < newAppt.Dates.Count(); j++)
+                else
                 {
-                    if (newAppt.Dates.ElementAt(j).day > max)
+                    TextReader reader = new StreamReader(newAppt.path);
+
+                    object obj = ser.Deserialize(reader);
+                    newAppt = (Appointments)obj;
+                    reader.Dispose();
+
+                    Console.WriteLine(newAppt);
+
+
+                    DateTime max = new DateTime();
+                    for (int j = 0; j < newAppt.Dates.Count(); j++)
                     {
-                        max = newAppt.Dates.ElementAt(j).day;
+                        if (newAppt.Dates.ElementAt(j).day > max)
+                        {
+                            max = newAppt.Dates.ElementAt(j).day;
+                        }
+                    }
+                    for (int k = 0; k < newAppt.Dates.Count(); k++)
+                    {
+                        if (forDate <= newAppt.Dates.ElementAt(k).day)
+                        {
+                            newAppt.Dates.Insert(k, new Date(forDate, appts, forDateEnd));
+                            break;
+                        }
+                        else if (forDate >= max)
+                        {
+                            newAppt.Dates.Insert(newAppt.Dates.Count(), new Date(forDate, appts, forDateEnd));
+
+                            break;
+                        }
+                    }
+                    reader.Dispose();
+
+                    StringWriter TextWriter2 = new StringWriter();
+                    ser.Serialize(TextWriter2, newAppt);
+                    File.WriteAllText(newAppt.path, TextWriter2.ToString());
+                    TextWriter2.Dispose();
+                }
+
+
+
+
+
+                //hier Warteliste überprüfen und Schleife durchgehen (ob genug Appts für alle Wartenden)
+
+
+                var newWaitList = new WaitingListObject();
+                var serW = new XmlSerializer(typeof(WaitingListObject));
+
+                TextReader readerW = new StreamReader(newWaitList.path);
+                object objW = serW.Deserialize(readerW);
+                newWaitList = (WaitingListObject)objW;
+                readerW.Dispose();
+
+                if (File.Exists(newWaitList.path))
+                {
+                    if (newWaitList.Waiters.Count() > 0)
+                    {
+
+                        var newAppt0 = new Appointments();
+                        var ser0 = new XmlSerializer(typeof(Appointments));
+                        TextReader reader0 = new StreamReader(newAppt0.path);
+
+                        object obj0 = ser0.Deserialize(reader0);
+                        newAppt0 = (Appointments)obj0;
+                        reader0.Dispose();
+
+
+                        //dann schleife durchgehen ig?
+                        Console.WriteLine(m);
+                        Console.WriteLine("Count: " + newAppt0.Dates.Count());
+                        Console.WriteLine(newAppt0.Dates.ElementAt(m));
+                        Console.WriteLine(newAppt0.Dates.ElementAt(m).numberOfTotalAppts);
+                        for (int e = 0; e < newAppt0.Dates.ElementAt(m).numberOfTotalAppts; e++)
+                        {
+                            if (newAppt0.Dates.ElementAt(m).numberOfTotalAppts > 0)
+                            {
+                                //decrement
+                                //newAppt.Dates.ElementAt(m).numberOfTotalAppts -= 1; passiert in der Methode unten 
+
+                                User user = new User();
+
+                                user.registerWrite(newAppt0.Dates.ElementAt(m).day, newWaitList.Waiters.ElementAt(e).email, newWaitList.Waiters.ElementAt(e).fname, newWaitList.Waiters.ElementAt(e).lname, newWaitList.Waiters.ElementAt(e).dOB, newWaitList.Waiters.ElementAt(e).phoneNo, newWaitList.Waiters.ElementAt(e).address);
+                                //hier Person aus warteliste austragen
+
+                                //
+                                newWaitList.Waiters.Remove(newWaitList.Waiters.ElementAt(newWaitList.Waiters.Count() -1 ));
+                                //
+                            }
+                        }
+                        /* if(newWaitList.Waiters.Count() <= apptCount)
+                        {
+
+                        } */
+                        //hier Termin runterzählen
+
+                        //hier Registrierung durchführen
+
+
+
+
+                    }
+                    else
+                    {
+                        //dann nichts
                     }
                 }
-                for (int k = 0; k < newAppt.Dates.Count(); k++)
+                else
                 {
-                    if (forDate <= newAppt.Dates.ElementAt(k).day)
-                    {
-                        newAppt.Dates.Insert(k, new Date(forDate, appts, forDateEnd));
-                        break;
-                    }
-                    else if (forDate >= max)
-                    {
-                        newAppt.Dates.Insert(newAppt.Dates.Count(), new Date(forDate, appts, forDateEnd));
-
-                        break;
-                    }
+                    //dann nichts
                 }
-                reader.Dispose();
 
-                using StringWriter TextWriter2 = new StringWriter();
-                ser.Serialize(TextWriter2, newAppt);
-                File.WriteAllText(newAppt.path, TextWriter2.ToString());
-                TextWriter2.Dispose();
+
+
+
+
             }
             Console.WriteLine("___________");
             for (int l = 0; l < newAppt.Dates.Count(); l++)
@@ -325,7 +430,7 @@ namespace VaxAppts
                 Console.WriteLine(newAppt.Dates[l].day + "(" + newAppt.Dates[l].numberOfAppts + ")");
             }
         }
-        public static void showTimes(DateTime adminDateTime)
+        private void showTimes(DateTime adminDateTime)
         {
             Console.WriteLine("_________");
             var newAppt = new Appointments();
@@ -362,7 +467,7 @@ namespace VaxAppts
             }
 
         }
-        public static float calcPercentage(Date calcDate)
+        private float calcPercentage(Date calcDate)
         {
             var newAppt = new Appointments();
             var ser = new XmlSerializer(typeof(Appointments));

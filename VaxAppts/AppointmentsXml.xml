@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-16"?>
 <Appointments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <path>D:\SoftwareDesignPruefung\SoftwareDesignPruefung\VaxAppts\AppointmentsXml.xml</path>
+  <path>AppointmentsXml.xml</path>
   <Dates>
     <Date>
-      <day>2021-07-18T08:00:00</day>
-      <apptEnd>2021-07-18T08:20:00</apptEnd>
-      <numberOfAppts>2</numberOfAppts>
-      <numberOfTotalAppts>2</numberOfTotalAppts>
+      <day>2021-07-27T10:00:00</day>
+      <apptEnd>2021-07-27T11:00:00</apptEnd>
+      <numberOfAppts>-3</numberOfAppts>
+      <numberOfTotalAppts>1</numberOfTotalAppts>
+    </Date>
+    <Date>
+      <day>2021-07-27T10:00:00</day>
+      <apptEnd>2021-07-27T11:00:00</apptEnd>
+      <numberOfAppts>-3</numberOfAppts>
+      <numberOfTotalAppts>1</numberOfTotalAppts>
+    </Date>
+    <Date>
+      <day>2021-07-29T12:00:00</day>
+      <apptEnd>2021-07-29T13:00:00</apptEnd>
+      <numberOfAppts>1</numberOfAppts>
+      <numberOfTotalAppts>1</numberOfTotalAppts>
+    </Date>
+    <Date>
+      <day>2021-08-12T10:00:00</day>
+      <apptEnd>2021-08-12T10:30:00</apptEnd>
+      <numberOfAppts>0</numberOfAppts>
+      <numberOfTotalAppts>1</numberOfTotalAppts>
+    </Date>
+    <Date>
+      <day>2021-08-12T10:30:00</day>
+      <apptEnd>2021-08-12T11:00:00</apptEnd>
+      <numberOfAppts>1</numberOfAppts>
+      <numberOfTotalAppts>1</numberOfTotalAppts>
     </Date>
   </Dates>
 </Appointments>

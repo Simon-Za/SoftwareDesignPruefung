@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace VaxAppts
 {
-    public class Registrations : WaitingListObject //das hier soltle prolly einfach Warteliste extenden
+    public class Registrations 
     {
-        public string pathReg = @"RegistrationsXml.xml";
+        public string path = @"RegistrationsXml.xml";
         public List<UserRegistered> Users;
 
         public Registrations()

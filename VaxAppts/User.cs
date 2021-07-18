@@ -1,6 +1,5 @@
 using System;
 using System.Xml.Serialization;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace VaxAppts
 {
     public class User
     {
-        public static void adminLogin()
+        public void adminLogin()
         {
             string _adminID = "VaxMaster69";
             string _adminPassword = "VacciGang";
@@ -40,7 +39,9 @@ namespace VaxAppts
                 Console.WriteLine("");
                 Console.WriteLine("");
 
-                Admin.adminScreen();
+                //Admin.adminScreen();
+                Admin admin = Admin.getInstance();
+                admin.adminScreen();
             }
             else
             {
@@ -50,7 +51,7 @@ namespace VaxAppts
 
         }
 
-        public static void viewAvailableDates()
+        public void viewAvailableDates()
         {
             int caseID = 0;
             var newAppt = new Appointments();
@@ -59,6 +60,7 @@ namespace VaxAppts
             TextReader reader = new StreamReader(newAppt.path);
             object obj = ser.Deserialize(reader);
             newAppt = (Appointments)obj;
+            reader.Dispose();
 
             Console.WriteLine("Following dates are available:");
             Console.WriteLine("____________________________");
@@ -77,7 +79,6 @@ namespace VaxAppts
                     saveDate = newAppt.Dates[u].day;
                 }
             }
-            reader.Dispose();
 
 
             Console.WriteLine("");
@@ -95,14 +96,14 @@ namespace VaxAppts
                 TextReader reader0 = new StreamReader(newAppt0.path);
                 object obj0 = ser0.Deserialize(reader0);
                 newAppt0 = (Appointments)obj0;
-
+                reader0.Dispose();
 
                 bool foundDate = false;
                 for (int n = 0; n < newAppt0.Dates.Count(); n++)
                 {
                     if (userDateTime.Day == newAppt0.Dates.ElementAt(n).day.Day && userDateTime.Month == newAppt0.Dates.ElementAt(n).day.Month && userDateTime.Year == newAppt0.Dates.ElementAt(n).day.Year)
                     {
-                        reader0.Dispose();
+
                         showTimes(userDateTime);
                         foundDate = true;
                         break;
@@ -112,7 +113,6 @@ namespace VaxAppts
                 {
                     dateNotFound(caseID);
                 }
-                reader0.Dispose();
 
             }
             else
@@ -122,7 +122,7 @@ namespace VaxAppts
             }
         }
 
-        public static void searchDate()
+        public void searchDate()
         {
             int caseID = 1;
             Console.WriteLine("");
@@ -133,20 +133,22 @@ namespace VaxAppts
 
             if (DateTime.TryParse(Console.ReadLine(), out userDateTime))
             {
-                var newAppt = new Appointments();
-                var ser = new XmlSerializer(typeof(Appointments));
+                var newAppt1 = new Appointments();
+                var ser1 = new XmlSerializer(typeof(Appointments));
 
-                TextReader reader1 = new StreamReader(newAppt.path);
-                object obj = ser.Deserialize(reader1);
-                newAppt = (Appointments)obj;
+                TextReader reader1 = new StreamReader(newAppt1.path);
+                object obj = ser1.Deserialize(reader1);
+                newAppt1 = (Appointments)obj;
+
+                reader1.Dispose();
 
                 bool foundDate = false;
 
-                for (int n = 0; n < newAppt.Dates.Count(); n++)
+                for (int n = 0; n < newAppt1.Dates.Count(); n++)
                 {
-                    if (userDateTime.Day == newAppt.Dates.ElementAt(n).day.Day && userDateTime.Month == newAppt.Dates.ElementAt(n).day.Month && userDateTime.Year == newAppt.Dates.ElementAt(n).day.Year)
+                    if (userDateTime.Day == newAppt1.Dates.ElementAt(n).day.Day && userDateTime.Month == newAppt1.Dates.ElementAt(n).day.Month && userDateTime.Year == newAppt1.Dates.ElementAt(n).day.Year)
                     {
-                        reader1.Dispose();
+
                         showTimes(userDateTime);
                         foundDate = true;
                         break;
@@ -156,7 +158,7 @@ namespace VaxAppts
                 {
                     dateNotFound(caseID);
                 }
-                reader1.Dispose();
+                //reader1.Dispose();
             }
             else
             {
@@ -164,21 +166,22 @@ namespace VaxAppts
                 dateNotFound(caseID);
             }
         }
-        public static void showTimes(DateTime specificDate)
+        public void showTimes(DateTime specificDate)
         {
             Console.WriteLine("_________");
-            var newAppt = new Appointments();
-            var ser = new XmlSerializer(typeof(Appointments));
+            var newAppt2 = new Appointments();
+            var ser2 = new XmlSerializer(typeof(Appointments));
 
-            TextReader reader2 = new StreamReader(newAppt.path);
-            object obj = ser.Deserialize(reader2);
-            newAppt = (Appointments)obj;
+            TextReader reader2 = new StreamReader(newAppt2.path);
+            object obj2 = ser2.Deserialize(reader2);
+            newAppt2 = (Appointments)obj2;
+            reader2.Dispose();
 
-            for (int n = 0; n < newAppt.Dates.Count(); n++)
+            for (int n = 0; n < newAppt2.Dates.Count(); n++)
             {
-                if (specificDate.Day == newAppt.Dates.ElementAt(n).day.Day && specificDate.Month == newAppt.Dates.ElementAt(n).day.Month && specificDate.Year == newAppt.Dates.ElementAt(n).day.Year)
+                if (specificDate.Day == newAppt2.Dates.ElementAt(n).day.Day && specificDate.Month == newAppt2.Dates.ElementAt(n).day.Month && specificDate.Year == newAppt2.Dates.ElementAt(n).day.Year)
                 {
-                    Console.WriteLine(newAppt.Dates[n].day.Hour + ":" + newAppt.Dates[n].day.Minute + "(" + newAppt.Dates[n].numberOfAppts + ")");
+                    Console.WriteLine(newAppt2.Dates[n].day.Hour + ":" + newAppt2.Dates[n].day.Minute + "(" + newAppt2.Dates[n].numberOfAppts + ")");
                 }
 
                 /*  for (int f = 0; f < specificDate; f++)
@@ -186,7 +189,6 @@ namespace VaxAppts
                      Console.WriteLine(newAppt.Dates[f].day + "(" + newAppt.Dates[f].numberOfAppts + ")");
                  } */
             }
-            reader2.Dispose();
 
             Console.WriteLine("");
             Console.WriteLine("Please pick a time you are comfortable with :)");
@@ -198,34 +200,34 @@ namespace VaxAppts
                 //LESEN, OB ES DIESE ZEIT ÜBERHAUPT GIBT AN DEM DATUM
                 int caseID = 3;
 
-                var newAppt1 = new Appointments();
-                var ser1 = new XmlSerializer(typeof(Appointments));
+                var newAppt3 = new Appointments();
+                var ser3 = new XmlSerializer(typeof(Appointments));
 
-                TextReader reader3 = new StreamReader(newAppt1.path);
-                object obj1 = ser.Deserialize(reader3);
-                newAppt1 = (Appointments)obj1;
+                TextReader reader3 = new StreamReader(newAppt3.path);
+                object obj3 = ser3.Deserialize(reader3);
+                newAppt3 = (Appointments)obj3;
+                reader3.Dispose();
 
                 bool foundDate = false;
 
-                for (int n = 0; n < newAppt1.Dates.Count(); n++)
+                for (int n = 0; n < newAppt3.Dates.Count(); n++)
                 {
-                    if (specificDate.Day == newAppt1.Dates.ElementAt(n).day.Day && specificDate.Month == newAppt1.Dates.ElementAt(n).day.Month && specificDate.Year == newAppt1.Dates.ElementAt(n).day.Year)
+                    if (specificDate.Day == newAppt3.Dates.ElementAt(n).day.Day && specificDate.Month == newAppt3.Dates.ElementAt(n).day.Month && specificDate.Year == newAppt3.Dates.ElementAt(n).day.Year)
                     {
-                        if (userTime.Hour == newAppt1.Dates.ElementAt(n).day.Hour && userTime.Minute == newAppt1.Dates.ElementAt(n).day.Minute && userTime.Second == newAppt1.Dates.ElementAt(n).day.Second)
+                        if (userTime.Hour == newAppt3.Dates.ElementAt(n).day.Hour && userTime.Minute == newAppt3.Dates.ElementAt(n).day.Minute && userTime.Second == newAppt3.Dates.ElementAt(n).day.Second)
                         {
                             //hier schauen ob die Zeit appts frei hat
-                            if (newAppt1.Dates.ElementAt(n).numberOfAppts <= 0)
+                            if (newAppt3.Dates.ElementAt(n).numberOfAppts <= 0)
                             {
                                 caseID = 5;
                                 timeNotFound(caseID, specificDate);
 
                             }
-
+                            //reader3.Dispose();
                             foundDate = true;
                             TimeSpan apptTime = new TimeSpan(userTime.Hour, userTime.Minute, userTime.Second);
                             DateTime apptDate = specificDate.Date.Add(apptTime);
 
-                            reader3.Dispose();
                             register(apptDate);
                         }
 
@@ -235,7 +237,7 @@ namespace VaxAppts
                 {
                     timeNotFound(caseID, specificDate);
                 }
-                reader3.Dispose();
+                //reader3.Dispose();
             }
             else
             {
@@ -243,7 +245,7 @@ namespace VaxAppts
                 timeNotFound(caseID, specificDate);
             }
         }
-        public static void dateNotFound(int caseID)
+        public void dateNotFound(int caseID)
         {
             if (caseID == 0 || caseID == 1)
             {
@@ -279,7 +281,7 @@ namespace VaxAppts
                 MainClass.startMenu();
             }
         }
-        public static void timeNotFound(int caseID, DateTime specificDate)
+        public void timeNotFound(int caseID, DateTime specificDate)
         {
             if (caseID == 3)
             {
@@ -309,7 +311,7 @@ namespace VaxAppts
                 MainClass.startMenu();
             }
         }
-        public static void register(DateTime apptDate)
+        public void register(DateTime apptDate)
         {
             string email;
             string fname;
@@ -342,13 +344,19 @@ namespace VaxAppts
             Console.Write("Address: ");
             address = Console.ReadLine();
 
-            //hier entsprechenden Termin austragen und Daten in Dok eintragen
+            registerWrite(apptDate, email, fname, lname, dOB, phoneNo, address);
+        }
+
+        //hier entsprechenden Termin austragen und Daten in Dok eintragen
+        public void registerWrite(DateTime apptDate, string email, string fname, string lname, string dOB, string phoneNo, string address)
+        {
             var newAppt4 = new Appointments();
             var ser4 = new XmlSerializer(typeof(Appointments));
 
             TextReader reader4 = new StreamReader(newAppt4.path);
-            object obj = ser4.Deserialize(reader4);
-            newAppt4 = (Appointments)obj;
+            object obj4 = ser4.Deserialize(reader4);
+            newAppt4 = (Appointments)obj4;
+            reader4.Dispose();
 
             for (int n = 0; n < newAppt4.Dates.Count(); n++)
             {
@@ -357,7 +365,6 @@ namespace VaxAppts
                     newAppt4.Dates.ElementAt(n).numberOfAppts -= 1;
                 }
             }
-            reader4.Dispose();
 
             using StringWriter TextWriter = new StringWriter();
             ser4.Serialize(TextWriter, newAppt4);
@@ -387,10 +394,10 @@ namespace VaxAppts
                 TextReader reader5 = new StreamReader(registrFile.path);
                 object obj1 = ser.Deserialize(reader5);
                 registrFile = (Registrations)obj1;
+                reader5.Dispose();
 
                 registrFile.Users.Insert(registrFile.Users.Count(), new UserRegistered(apptDate, email, fname, lname, dOB, phoneNo, address));
 
-                reader5.Dispose();
 
 
                 using StringWriter TextWriter2 = new StringWriter();
@@ -401,10 +408,11 @@ namespace VaxAppts
             }
 
             Console.WriteLine("Registration complete!");
-            Environment.Exit(0);
-        }
+            sendEmail();
+            //Environment.Exit(0);
 
-        public static string eMail()
+        }
+        public string eMail()
         {
             string email = Console.ReadLine();
 
@@ -430,6 +438,7 @@ namespace VaxAppts
                 TextReader reader6 = new StreamReader(registrationFile.path);
                 object obj = ser0.Deserialize(reader6);
                 registrationFile = (Registrations)obj;
+                reader6.Dispose();
 
                 for (int k = 0; k < registrationFile.Users.Count(); k++)
                 {
@@ -441,7 +450,6 @@ namespace VaxAppts
                         eMail();
                     }
                 }
-                reader6.Dispose();
             }
             return email;
         }
@@ -452,5 +460,11 @@ namespace VaxAppts
 
             return isValidEmail;
         }
+        public static void sendEmail()
+        {
+            //hier Schnittstelle zu E-Mail Service einfügen
+        }
     }
 }
+
+

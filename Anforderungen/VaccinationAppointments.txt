@@ -87,11 +87,3 @@ Bedeutet die Personen auf der Warteliste werden mit den neuen Terminen verknüpf
 
 Diese Personen werden dann im realen Betrieb per E-Mail informiert und aus der Warteliste genommen.
 Hierbei gilt das Prinzip First-In / First-Out, der Erste in der Warteliste, bekommt auch als erstes einen neuen freien Termin.
-
-
-
-
-//Vllt noch Impfstoff Auswahl?
-//Balkendiagramm in Konsole
-//Singleton maybe für Terminliste?
-//Modul Uhrzeiteingabe

@@ -1,17 +1,15 @@
 using System;
 using System.Xml.Serialization;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 
 namespace VaxAppts
 {
     public class WaitingList
     {
-        public static void WaitingListStartScreen()
+        public void WaitingListStartScreen()
         {
             Console.WriteLine("\u2022 Do you want to put your name on the list?");
             Console.WriteLine("_____________________________________________");
@@ -28,15 +26,17 @@ namespace VaxAppts
                 backToHomescreen();
             }
         }
-        private static void enterCredentials()
+        private void enterCredentials()
         {
             Console.WriteLine("\u2022 Please enter your credentials below");
 
             //An der Stelle maybe ein Objekt erstellen mit: E-Mail, Vor-, Nachname, Geburtstag, Tel, Adresse ?
             //hier maybe einfach Appointments.cs benutzen??
+            User user = new User();
+
 
             Console.Write("E-Mail: ");
-            string userMail = User.eMail();
+            string userMail = user.eMail();
             Console.Write("First Name: ");
             string userFirstName = Console.ReadLine();
             Console.Write("Last Name: ");
@@ -83,7 +83,7 @@ namespace VaxAppts
 
 
         }
-        private static void backToHomescreen()
+        private void backToHomescreen()
         {
             MainClass.startMenu();
         }
